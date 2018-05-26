@@ -1,14 +1,5 @@
 /*!
-Theme Name: Bollywood Hungama
-Theme URI: https://rtcamp.com/
-Author: rtCamp
-Author URI: https://rtcamp.com/
-Description: Bollywood Hungama theme by rtCamp.
-Contributors: Manish Songirkar, Ritesh Patel, Sayed Taqui, Rahul Prajapati, Vaishali Agola ( http://rtcamp.com/about/rtcampers/ )
-Version: 1.0.0
-License: GNU General Public License v2 or later
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
-Text Domain: bh
+
 Tags: white, black, red, orange, blue
 */
 
@@ -15521,7 +15512,7 @@ input[type="search"].bh-looking-for-input {
 }
 
 .bh-home-coverage .full-coverage-bg {
-	background: url("images/view-full-coverage.png") no-repeat scroll 50% 0 transparent;
+	background: url("https://1.bp.blogspot.com/-21uU427jCW0/WwkcToHkNFI/AAAAAAAAAnc/ZR7w1rfITG4O7PszhkvBo1uNXYmrrZSTACLcBGAs/s320/view-full-coverage.png") no-repeat scroll 50% 0 transparent;
 	padding: 2.75rem 0 0.4375rem;
 	margin-top: -1.25rem;
 	margin-bottom: 0;

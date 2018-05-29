@@ -11167,8 +11167,8 @@ a.round-bg:hover:before {
 	font-size: 0.875rem;
 }
 
-.bh-in-theatres-slider .bh-movie-box,
-.bh-in-theatres-slider .hentry {
+.bh-movie-box,
+.hentry {
 	display: none;
 }
 

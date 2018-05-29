@@ -11167,13 +11167,13 @@ a.round-bg:hover:before {
 	font-size: 0.875rem;
 }
 
-.bh-movie-box,
-.hentry {
+.bh-in-theatres-slider .bh-movie-box,
+.bh-in-theatres-slider .hentry {
 	display: none;
 }
 
-.slick-initialized .bh-movie-box,
-.slick-initialized .hentry {
+.bh-in-theatres-slider .slick-initialized .bh-movie-box,
+.bh-in-theatres-slider .slick-initialized .hentry {
 	display: block;
 }
 

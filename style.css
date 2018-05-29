@@ -11172,8 +11172,8 @@ a.round-bg:hover:before {
 	display: none;
 }
 
-.bh-in-theatres-slider .slick-initialized .bh-movie-box,
-.bh-in-theatres-slider .slick-initialized .hentry {
+.slick-initialized .bh-movie-box,
+.slick-initialized .hentry {
 	display: block;
 }
 

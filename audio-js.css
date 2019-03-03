@@ -152,10 +152,10 @@ so you can upgrade to newer versions easier. */
 .ajs-volume-control div span.ajs-volume-level-on { border-color: #fff; /* Volume on bar color */ }
 /* Creating differnt bar heights through height (transparent) and bottom border (visible). */
 .ajs-volume-control div span:nth-child(1) { border-bottom-width: 2px; height: 16px; }
-.ajs-volume-control div span:nth-child(2) { border-bottom-width: 4px; height: 14px; }
-.ajs-volume-control div span:nth-child(3) { border-bottom-width: 7px; height: 11px; }
-.ajs-volume-control div span:nth-child(4) { border-bottom-width: 10px; height: 8px; }
-.ajs-volume-control div span:nth-child(5) { border-bottom-width: 14px; height: 4px; }
+.ajs-volume-control div span:nth-child(2) { border-bottom-width: 4px; height: 16px; }
+.ajs-volume-control div span:nth-child(3) { border-bottom-width: 7px; height: 16px; }
+.ajs-volume-control div span:nth-child(4) { border-bottom-width: 11px; height: 16px; }
+.ajs-volume-control div span:nth-child(5) { border-bottom-width: 14px; height: 16px; }
 .ajs-volume-control div span:nth-child(6) { margin-right: 0; }
 
 /* Download Links - Used for browsers that don't support any audio.

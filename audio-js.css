@@ -145,7 +145,7 @@ so you can upgrade to newer versions easier. */
 /* Drawing the volume icon using 6 span elements */
 .ajs-volume-control div span { /* Individual volume bars */
   float: left; padding: 0;
-  margin: 0 2px 0 0; /* Space between */
+  margin: 0 1px 0 0; /* Space between */
   width: 5px; height: 0px; /* Total height is height + bottom border */
   border-bottom: 18px solid #555; /* Default (off) color and height of visible portion */
 }

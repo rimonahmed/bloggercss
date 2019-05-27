@@ -656,3 +656,1356 @@ document.write(printsong);
 }
 
 }
+
+var ListCountupcoming = 999; 
+var TitleCount = 90; 
+var ImageSize = 200; 
+function mthism(json) { 
+for (var i = 0; i < ListCountupcoming; i++) 
+{  
+var listing= ListImage = ListUrl = ListTitle = ListImage = ListContent = ListConten = ListAuthor = ListTag = ListDate = ListUpdate = ListComments = thumbUrl = TotalPosts = sk = AuthorPic= ListMonth = Y = D = M = m = YY = DD = MM = mm = TT =  ""; 
+
+if (json.feed.entry[i].category != null) 
+{ 
+for (var k = 0; k < json.feed.entry[i].category.length; k++) { 
+ListTag += "<a href='/search/label/"+json.feed.entry[i].category[k].term+"'>"+json.feed.entry[i].category[k].term+"</a>"; 
+if(k < json.feed.entry[i].category.length-1) 
+{ ListTag += " ";} 
+} 
+} 
+
+for (var j = 0; j < json.feed.entry[i].link.length; j++) { 
+      if (json.feed.entry[i].link[j].rel == 'alternate') { 
+        break; 
+      } 
+    } 
+ListUrl= "'" + json.feed.entry[i].link[j].href + "'"; 
+var postTitle = json.feed.entry[i].title.$t;
+
+TotalPosts = json.feed.openSearch$totalResults.$t; 
+if (json.feed.entry[i].title!= null) 
+{ 
+ListTitles= json.feed.entry[i].title.$t; 
+ListTitle= ListTitles.substring(0, ListTitles.indexOf('-'));
+}
+
+if (json.feed.entry[i].thr$total) 
+{ 
+ListComments= "<a href='"+json.feed.entry[i].link[j].href+"#comment-form'>"+json.feed.entry[i].thr$total.$t+"</a>"; 
+} 
+ListAuthor= json.feed.entry[i].author[0].name.$t.split(" "); 
+ListAuthor=ListAuthor.slice(0, 1).join(" "); 
+AuthorPic = json.feed.entry[i].author[0].gd$image.src; 
+
+ListMonth= ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]; 
+ListDate= json.feed.entry[i].published.$t.substring(0,10); 
+                         Y = ListDate.substring(0, 4); 
+                        m = ListDate.substring(5, 7); 
+                         D = ListDate.substring(8, 10); 
+                         M = ListMonth[parseInt(m - 1)];                       
+ListUpdate= json.feed.entry[i].updated.$t.substring(0, 16); 
+                         YY = ListUpdate.substring(0, 4); 
+                        mm = ListUpdate.substring(5, 7); 
+                         DD = ListUpdate.substring(8, 10); 
+                         TT = ListUpdate.substring(11, 16); 
+                         MM = ListMonth[parseInt(mm - 1)];   
+
+if (json.feed.entry[i].media$thumbnail!=null) 
+{ 
+thumbUrl = json.feed.entry[i].media$thumbnail.url; 
+sk= thumbUrl.replace("/s72-c/","/s"+ImageSize+"/"); 
+ListImage= "'" + sk.replace("?imgmax=800","") + "'"; 
+}
+// YouTube scan 
+else if (json.feed.entry[i].content.$t.match(/youtube\.com.*(\?v=|\/embed\/)(.{11})/) != null) 
+{ 
+    var youtube_id = json.feed.entry[i].content.$t.match(/youtube\.com.*(\?v=|\/embed\/)(.{11})/).pop(); 
+    
+    if (youtube_id.length == 11) { 
+        var ListImage = "'//img.youtube.com/vi/"+youtube_id+"/0.jpg'"; 
+        } 
+} 
+else if (json.feed.entry[i].content.$t.match(/src=(.+?[\.jpg|\.gif|\.png]")/) != null) 
+{ 
+// Support For 3rd Party Images 
+ListImage =  json.feed.entry[i].content.$t.match(/src=(.+?[\.jpg|\.gif|\.png]")/)[1]; 
+} 
+else 
+{ 
+ListImage= "'https://4.bp.blogspot.com/-HALLtgFeep0/VfryhQ0C5oI/AAAAAAAAPcY/77mSGND4q84/s200/Icon.png'"; 
+} 
+
+
+
+if (json.feed.entry[i].content.$t.match(/<span[^>]+class="matchthis"[^>]*>[^>]*<\/span>/) != null) 
+{ 
+rk =  json.feed.entry[i].content.$t.match(/<span[^>]+class="matchthis"[^>]*>[^>]*<\/span>/); 
+	
+}
+
+var pk= ""+rk+"";
+var text = pk.replace(/<\/?(span|div|img|p...)\b[^<>]*>/g, "");
+var postdate = new Date(text);
+var now = new Date();
+var postm = postdate.getMonth()+1;
+var posty = postdate.getFullYear();
+var nowm = now.getMonth()+1;
+var nowy = now.getFullYear();
+
+
+if (nowm == 11) {
+    currentdte = new Date(now.getFullYear() + 1, 0, 1);
+	nextyear = currentdte.getFullYear();
+	nextmonth = currentdte.getMonth()+1;
+	
+} else {
+    currentdte = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+	nextyear = currentdte.getFullYear();
+	nextmonth = currentdte.getMonth()+1;
+	
+}
+
+var posttime = postdate.getTime();
+var current = now.getTime();
+var month = new Array();
+    month[0] = "Jan";
+    month[1] = "Feb";
+    month[2] = "Mar";
+    month[3] = "Apr";
+    month[4] = "May";
+    month[5] = "Jun";
+    month[6] = "Jul";
+    month[7] = "Aug";
+    month[8] = "Sep";
+    month[9] = "Oct";
+    month[10] = "Nov";
+    month[11] = "Dec";
+    var n = month[postdate.getMonth()];
+	
+	d = postdate.getDate();
+
+if (postm == nextmonth && posty == nextyear) {
+days = "<li class='large-4 medium-4 small-6 columns upcominghide'><figure ><a href="+ ListUrl+" title='"+ListTitle+"' class='image'><img width='165' height='212' src='https://1.bp.blogspot.com/-UmT6HctTuSw/WzKAal2u49I/AAAAAAAAAAM/sS13Wn9nHpU784JnZ0qjdJrJvBCFD5k7gCLcBGAs/s1600/loader-wht-bg.jpg' data-lazy-type='image' data-lazy-src="+ListImage+" class='lazy lazy-hidden image  wp-post-image'  src="+ListImage+" class='image wp-post-image' title='"+ListTitle+"'  /></a></figure><div class='movie-meta'><div class='release-date'>"+makeMeTwoDigits(d)+" "+n+" "+posty+"</div><div class='movie-meta pointer clearfix'><h4 class='clear-both name'><a href="+ ListUrl+" title='"+ListTitle+"'>"+ListTitle+"</a></div></div><span class='wpac-review-count' data-wpac-url="+ListUrl+"></span></li>";
+	var listing =  days;
+document.write(listing);}
+
+}
+} 
+
+var Listreview = 3; 
+var TitleCount = 90; 
+var ImageSize = 200; 
+
+function mreview(json) { 
+for (var i = 0; i < Listreview; i++) 
+{  
+
+var listing= ListImage = ListUrl = ListTitle = ListImage = ListContent = ListConten = ListAuthor = ListTag = ListDate = ListUpdate = ListComments = thumbUrl = TotalPosts = sk = AuthorPic= ListMonth = Y = D = M = m = YY = DD = MM = mm = TT =  ""; 
+
+if (json.feed.entry[i].category != null) 
+{ 
+for (var k = 0; k < json.feed.entry[i].category.length; k++) { 
+ListTag += "<a href='/search/label/"+json.feed.entry[i].category[k].term+"'>"+json.feed.entry[i].category[k].term+"</a>"; 
+if(k < json.feed.entry[i].category.length-1) 
+{ ListTag += " ";} 
+} 
+} 
+
+for (var j = 0; j < json.feed.entry[i].link.length; j++) { 
+      if (json.feed.entry[i].link[j].rel == 'alternate') { 
+        break; 
+      } 
+    } 
+ListUrl= "'" + json.feed.entry[i].link[j].href + "'"; 
+var postTitle = json.feed.entry[i].title.$t;
+
+TotalPosts = json.feed.openSearch$totalResults.$t; 
+if (json.feed.entry[i].title!= null) 
+{ 
+ListTitles= json.feed.entry[i].title.$t; 
+ListTitle= ListTitles.substring(0, ListTitles.indexOf('-'));
+}
+
+if (json.feed.entry[i].thr$total) 
+{ 
+ListComments= "<a href='"+json.feed.entry[i].link[j].href+"#comment-form'>"+json.feed.entry[i].thr$total.$t+"</a>"; 
+} 
+ListAuthor= json.feed.entry[i].author[0].name.$t.split(" "); 
+ListAuthor=ListAuthor.slice(0, 1).join(" "); 
+AuthorPic = json.feed.entry[i].author[0].gd$image.src; 
+
+ListMonth= ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]; 
+ListDate= json.feed.entry[i].published.$t.substring(0,10); 
+                         Y = ListDate.substring(0, 4); 
+                        m = ListDate.substring(5, 7); 
+                         D = ListDate.substring(8, 10); 
+                         M = ListMonth[parseInt(m - 1)];                       
+ListUpdate= json.feed.entry[i].updated.$t.substring(0, 16); 
+                         YY = ListUpdate.substring(0, 4); 
+                        mm = ListUpdate.substring(5, 7); 
+                         DD = ListUpdate.substring(8, 10); 
+                         TT = ListUpdate.substring(11, 16); 
+                         MM = ListMonth[parseInt(mm - 1)];   
+
+if (json.feed.entry[i].media$thumbnail!=null) 
+{ 
+thumbUrl = json.feed.entry[i].media$thumbnail.url; 
+sk= thumbUrl.replace("/s72-c/","/s"+ImageSize+"/"); 
+ListImage= "'" + sk.replace("?imgmax=800","") + "'"; 
+}
+// YouTube scan 
+else if (json.feed.entry[i].content.$t.match(/youtube\.com.*(\?v=|\/embed\/)(.{11})/) != null) 
+{ 
+    var youtube_id = json.feed.entry[i].content.$t.match(/youtube\.com.*(\?v=|\/embed\/)(.{11})/).pop(); 
+    
+    if (youtube_id.length == 11) { 
+        var ListImage = "'//img.youtube.com/vi/"+youtube_id+"/0.jpg'"; 
+        } 
+} 
+else if (json.feed.entry[i].content.$t.match(/src=(.+?[\.jpg|\.gif|\.png]")/) != null) 
+{ 
+// Support For 3rd Party Images 
+ListImage =  json.feed.entry[i].content.$t.match(/src=(.+?[\.jpg|\.gif|\.png]")/)[1]; 
+} 
+else 
+{ 
+ListImage= "'https://4.bp.blogspot.com/-HALLtgFeep0/VfryhQ0C5oI/AAAAAAAAPcY/77mSGND4q84/s200/Icon.png'"; 
+} 
+
+var review = "<li class='large-4 medium-4 small-6 columns upcominghide'><figure ><a href="+ ListUrl+" title='"+ListTitle+"' class='image'><img width='165' height='212' src='https://1.bp.blogspot.com/-UmT6HctTuSw/WzKAal2u49I/AAAAAAAAAAM/sS13Wn9nHpU784JnZ0qjdJrJvBCFD5k7gCLcBGAs/s1600/loader-wht-bg.jpg' data-lazy-type='image' data-lazy-src="+ListImage+" class='lazy lazy-hidden image  wp-post-image'  src="+ListImage+" class='image wp-post-image' title='"+ListTitle+"'  /></a></figure><div class='movie-meta'><div class='movie-meta pointer clearfix'><h4 class='clear-both name'><a href="+ ListUrl+" title='"+ListTitle+"'>"+ListTitle+"</a></div></div><span class='wpac-review-count' data-wpac-url="+ListUrl+"></span></li>";
+	var listingreview =  review;
+document.write(listingreview);}
+
+} 
+
+function videos(json) { 
+for (var i = 0; i < ListCountvideo; i++) 
+{  
+
+var videos = ListImage = ListUrl = ListImage = ListContent = ListConten = ListAuthor = ListTag = ListDate = ListUpdate = ListComments = thumbUrl = TotalPosts = sk = AuthorPic= ListMonth = Y = D = M = m = YY = DD = MM = mm = TT =  ""; 
+
+if (json.feed.entry[i].category != null) 
+{ 
+for (var k = 0; k < json.feed.entry[i].category.length; k++) { 
+ListTag += "<a href='/search/label/"+json.feed.entry[i].category[k].term+"'>"+json.feed.entry[i].category[k].term+"</a>"; 
+if(k < json.feed.entry[i].category.length-1) 
+{ ListTag += " ";} 
+} 
+} 
+
+for (var j = 0; j < json.feed.entry[i].link.length; j++) { 
+      if (json.feed.entry[i].link[j].rel == 'alternate') { 
+        break; 
+      } 
+    } 
+ListUrl= "'" + json.feed.entry[i].link[j].href + "'"; 
+var videopostTitle = json.feed.entry[i].title.$t;
+ 
+TotalPosts = json.feed.openSearch$totalResults.$t; 
+
+
+if (json.feed.entry[i].thr$total) 
+{ 
+ListComments= "<a href='"+json.feed.entry[i].link[j].href+"#comment-form'>"+json.feed.entry[i].thr$total.$t+"</a>"; 
+} 
+ListAuthor= json.feed.entry[i].author[0].name.$t.split(" "); 
+ListAuthor=ListAuthor.slice(0, 1).join(" "); 
+AuthorPic = json.feed.entry[i].author[0].gd$image.src; 
+
+ListMonth= ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]; 
+ListDate= json.feed.entry[i].published.$t.substring(0,10); 
+                         Y = ListDate.substring(0, 4); 
+                        m = ListDate.substring(5, 7); 
+                         D = ListDate.substring(8, 10); 
+                         M = ListMonth[parseInt(m - 1)];                       
+ListUpdate= json.feed.entry[i].updated.$t.substring(0, 16); 
+                         YY = ListUpdate.substring(0, 4); 
+                        mm = ListUpdate.substring(5, 7); 
+                         DD = ListUpdate.substring(8, 10); 
+                         TT = ListUpdate.substring(11, 16); 
+                         MM = ListMonth[parseInt(mm - 1)];   
+
+
+if (json.feed.entry[i].media$thumbnail!=null) 
+{ 
+thumbUrl = json.feed.entry[i].media$thumbnail.url; 
+
+ListImage = thumbUrl.replace("/s72-c/","/w"+ImagewSize+"/");
+ListImage2 = thumbUrl.replace("/s72-c/","/w"+ImagewSizeF1+"/")
+
+}
+
+else if (json.feed.entry[i].content.$t.match(/src=(.+?[\.jpg|\.gif|\.png]")/) != null) 
+{ 
+// Support For 3rd Party Images 
+ListImage =  json.feed.entry[i].content.$t.match(/src=(.+?[\.jpg|\.gif|\.png]")/)[1]; 
+} 
+else 
+{ 
+ListImage= "'https://4.bp.blogspot.com/-HALLtgFeep0/VfryhQ0C5oI/AAAAAAAAPcY/77mSGND4q84/s200/Icon.png'"; 
+} 
+
+if (i==0) {var videos = "<li class='movie-wrapper bh-box large' itemtype='https://schema.org/ImageGallery'><figure itemprop='associatedMedia' itemscope itemtype='https://schema.org/ImageObject'><a data-pjax href="+ListUrl+" title='"+videopostTitle+"' itemprop='contentUrl'><img src='https://3.bp.blogspot.com/-nFqnJG59ez4/Ww6pTTI2qeI/AAAAAAAAAoA/QqqyDqIoIAI1oGU5VpUUygUD6c73-nKfQCLcBGAs/s1600/1x1.trans.gif' alt='"+videopostTitle+"' data-lazy-src="+ListImage+" width='322' height='322' class='image  wp-post-image' alt itemprop='image url' role='img' title='"+videopostTitle+"' srcset='"+ListImage+" 322w, "+ListImage2+" 165w' sizes='(max-width: 322px) 100vw, 322px'></img> </a><figcaption class='hide' itemprop='caption description'>"+videopostTitle+"</figcaption></figure><div class='movie-title bh-hover-meta'><h4 class='entry-title name' itemprop='headline'><a href="+ ListUrl+" title='"+videopostTitle+"'>"+videopostTitle+" </a></h4></div><a class='black-play small' href="+ListUrl+" title='Play'>Play</a></li>";
+	
+document.write(videos)
+}
+if( i > 0 && i < ListCountvideo ){var videos ="<li class='movie-wrapper bh-box small' itemtype='https://schema.org/ImageGallery'><figure itemprop='associatedMedia' itemscope itemtype='https://schema.org/ImageObject'><a data-pjax href="+ListUrl+" title='"+videopostTitle+"' itemprop='contentUrl'><img src='https://3.bp.blogspot.com/-nFqnJG59ez4/Ww6pTTI2qeI/AAAAAAAAAoA/QqqyDqIoIAI1oGU5VpUUygUD6c73-nKfQCLcBGAs/s1600/1x1.trans.gif' alt='"+videopostTitle+"' data-lazy-src="+ListImage2+" width='165' height='165' class='image  wp-post-image' alt itemprop='image url' role='img' title='"+videopostTitle+"' srcset='"+ListImage2+" 165w, "+ListImage+" 322w' sizes='(max-width: 322px) 100vw, 322px'></img> </a><figcaption class='hide' itemprop='caption description'>"+videopostTitle+"</figcaption></figure><div class='movie-title bh-hover-meta'><h4 class='entry-title name' itemprop='headline'><a href="+ ListUrl+" title='"+videopostTitle+"'>"+videopostTitle+" </a></h4></div><a class='black-play small' href="+ListUrl+" title='Play'>Play</a></li>";
+document.write(videos)}
+} 
+
+} 
+
+var Listmusicreview = 3; 
+var TitleCount = 90; 
+var ImageSize = 200; 
+
+function musiceview(json) { 
+for (var i = 0; i < Listmusicreview; i++) 
+{  
+
+var listing= ListImage = ListUrl = ListTitle = ListImage = ListContent = ListConten = ListAuthor = ListTag = ListDate = ListUpdate = ListComments = thumbUrl = TotalPosts = sk = AuthorPic= ListMonth = Y = D = M = m = YY = DD = MM = mm = TT =  ""; 
+
+if (json.feed.entry[i].category != null) 
+{ 
+for (var k = 0; k < json.feed.entry[i].category.length; k++) { 
+ListTag += "<a href='/search/label/"+json.feed.entry[i].category[k].term+"'>"+json.feed.entry[i].category[k].term+"</a>"; 
+if(k < json.feed.entry[i].category.length-1) 
+{ ListTag += " ";} 
+} 
+} 
+
+for (var j = 0; j < json.feed.entry[i].link.length; j++) { 
+      if (json.feed.entry[i].link[j].rel == 'alternate') { 
+        break; 
+      } 
+    } 
+ListUrl= "'" + json.feed.entry[i].link[j].href + "'"; 
+var postTitle = json.feed.entry[i].title.$t;
+
+TotalPosts = json.feed.openSearch$totalResults.$t; 
+if (json.feed.entry[i].title!= null) 
+{ 
+ListTitles= json.feed.entry[i].title.$t; 
+ListTitle= ListTitles.substring(0, ListTitles.indexOf('-'));
+}
+
+if (json.feed.entry[i].media$thumbnail!=null) 
+{ 
+thumbUrl = json.feed.entry[i].media$thumbnail.url; 
+ListImage= thumbUrl.replace("/s72-c/","/s"+ImageSize+"/"); 
+
+}
+// YouTube scan 
+else if (json.feed.entry[i].content.$t.match(/youtube\.com.*(\?v=|\/embed\/)(.{11})/) != null) 
+{ 
+    var youtube_id = json.feed.entry[i].content.$t.match(/youtube\.com.*(\?v=|\/embed\/)(.{11})/).pop(); 
+    
+    if (youtube_id.length == 11) { 
+        var ListImage = "'//img.youtube.com/vi/"+youtube_id+"/0.jpg'"; 
+        } 
+} 
+else if (json.feed.entry[i].content.$t.match(/src=(.+?[\.jpg|\.gif|\.png]")/) != null) 
+{ 
+// Support For 3rd Party Images 
+ListImage =  json.feed.entry[i].content.$t.match(/src=(.+?[\.jpg|\.gif|\.png]")/)[1]; 
+} 
+else 
+{ 
+ListImage= "'https://4.bp.blogspot.com/-HALLtgFeep0/VfryhQ0C5oI/AAAAAAAAPcY/77mSGND4q84/s200/Icon.png'"; 
+} 
+
+var mureview = "<li itemtype='https://schema.org/MusicAlbum' role='listitem'><figure itemprop='image' itemtype='https://schema.org/ImageObject'><a href="+
+ListUrl+" title='"+ListTitle+"'><img width='165' src='https://1.bp.blogspot.com/-UmT6HctTuSw/WzKAal2u49I/AAAAAAAAAAM/sS13Wn9nHpU784JnZ0qjdJrJvBCFD5k7gCLcBGAs/s1600/loader-wht-bg.jpg' alt='"+ListTitles+"' data-lazy-type='image' data-lazy-src="+ListImage+" class='lazy lazy-hidden image  wp-post-image' src="+ListImage+"  class='image wp-post-image' title='"+ListTitles+"'/><meta content='"+ListTitles+"' itemprop='url'/><meta content='165' itemprop='width'/><meta content='165' itemprop='height'/></a></figure><div class='music-meta pointer'><h4 class='entry-title name' itemprop='name'><a href="+
+ListUrl+" itemprop='url' title='"+ListTitles+"'>"+ListTitle+"</a></h4></div></li>";
+	var listingmureview =  mureview;
+document.write(listingmureview);}
+
+}
+
+var Listmusicreview = 6; 
+var TitleCount = 90; 
+var ImageSize = 200; 
+
+function fullalbum(json) { 
+for (var i = 0; i < Listmusicreview; i++) 
+{  
+
+var listing= ListImage = ListUrl = ListTitle = ListImage = ListContent = ListConten = ListAuthor = ListTag = ListDate = ListUpdate = ListComments = thumbUrl = TotalPosts = sk = AuthorPic= ListMonth = Y = D = M = m = YY = DD = MM = mm = TT =  ""; 
+
+if (json.feed.entry[i].category != null) 
+{ 
+for (var k = 0; k < json.feed.entry[i].category.length; k++) { 
+ListTag += "<a href='/search/label/"+json.feed.entry[i].category[k].term+"'>"+json.feed.entry[i].category[k].term+"</a>"; 
+if(k < json.feed.entry[i].category.length-1) 
+{ ListTag += " ";} 
+} 
+} 
+
+for (var j = 0; j < json.feed.entry[i].link.length; j++) { 
+      if (json.feed.entry[i].link[j].rel == 'alternate') { 
+        break; 
+      } 
+    } 
+ListUrl= "'" + json.feed.entry[i].link[j].href + "'"; 
+var postTitle = json.feed.entry[i].title.$t;
+
+TotalPosts = json.feed.openSearch$totalResults.$t; 
+if (json.feed.entry[i].title!= null) 
+{ 
+ListTitles= json.feed.entry[i].title.$t; 
+ListTitle= ListTitles.substring(0, ListTitles.indexOf('-'));
+}
+
+if (json.feed.entry[i].media$thumbnail!=null) 
+{ 
+thumbUrl = json.feed.entry[i].media$thumbnail.url; 
+ListImage= thumbUrl.replace("/s72-c/","/s"+ImageSize+"/"); 
+
+}
+// YouTube scan 
+else if (json.feed.entry[i].content.$t.match(/youtube\.com.*(\?v=|\/embed\/)(.{11})/) != null) 
+{ 
+    var youtube_id = json.feed.entry[i].content.$t.match(/youtube\.com.*(\?v=|\/embed\/)(.{11})/).pop(); 
+    
+    if (youtube_id.length == 11) { 
+        var ListImage = "'//img.youtube.com/vi/"+youtube_id+"/0.jpg'"; 
+        } 
+} 
+else if (json.feed.entry[i].content.$t.match(/src=(.+?[\.jpg|\.gif|\.png]")/) != null) 
+{ 
+// Support For 3rd Party Images 
+ListImage =  json.feed.entry[i].content.$t.match(/src=(.+?[\.jpg|\.gif|\.png]")/)[1]; 
+} 
+else 
+{ 
+ListImage= "'https://4.bp.blogspot.com/-HALLtgFeep0/VfryhQ0C5oI/AAAAAAAAPcY/77mSGND4q84/s200/Icon.png'"; 
+} 
+
+
+var mureview = "<li itemtype='https://schema.org/MusicAlbum' role='listitem'><figure itemprop='image' itemtype='https://schema.org/ImageObject'><a href="+ListUrl+" title='"+ListTitle+"'><img width='165' src='https://1.bp.blogspot.com/-UmT6HctTuSw/WzKAal2u49I/AAAAAAAAAAM/sS13Wn9nHpU784JnZ0qjdJrJvBCFD5k7gCLcBGAs/s1600/loader-wht-bg.jpg' alt='"+ListTitles+"' data-lazy-type='image' data-lazy-src="+ListImage+" class='lazy lazy-hidden image  wp-post-image' src="+ListImage+"  class='image wp-post-image' title='"+ListTitles+"'/><meta content='"+ListTitles+"' itemprop='url'/><meta content='165' itemprop='width'/><meta content='165' itemprop='height'/></a></figure><div class='music-meta pointer'><h4 class='entry-title name' itemprop='name'><a href="+ListUrl+" itemprop='url' title='"+ListTitles+"'>"+ListTitle+"</a></h4></div></li>";
+var listingmureview =  mureview;
+document.write(listingmureview);}
+
+}
+
+var Listmusicreview = 5; 
+var TitleCount = 90; 
+var ImageSize = 200; 
+function lyrics(json) { 
+for (var i = 0; i < Listmusicreview; i++) 
+{  
+var count = (i+1);
+var listing= ListImage = ListUrl = ListTitle = ListImage = ListContent = ListConten = ListAuthor = ListTag = ListDate = ListUpdate = ListComments = thumbUrl = TotalPosts = sk = AuthorPic= ListMonth = Y = D = M = m = YY = DD = MM = mm = TT =  ""; 
+
+if (json.feed.entry[i].category != null) 
+{ 
+for (var k = 0; k < json.feed.entry[i].category.length; k++) { 
+ListTag += "<a href='/search/label/"+json.feed.entry[i].category[k].term+"'>"+json.feed.entry[i].category[k].term+"</a>"; 
+if(k < json.feed.entry[i].category.length-1) 
+{ ListTag += " ";} 
+} 
+} 
+
+for (var j = 0; j < json.feed.entry[i].link.length; j++) { 
+      if (json.feed.entry[i].link[j].rel == 'alternate') { 
+        break; 
+      } 
+    } 
+ListUrl= "'" + json.feed.entry[i].link[j].href + "'"; 
+var postTitle = json.feed.entry[i].title.$t;
+
+TotalPosts = json.feed.openSearch$totalResults.$t; 
+if (json.feed.entry[i].title!= null) 
+{ 
+ListTitles= json.feed.entry[i].title.$t; 
+ListTitle= ListTitles.substring(0, ListTitles.indexOf('-'));
+}
+
+if (json.feed.entry[i].media$thumbnail!=null) 
+{ 
+thumbUrl = json.feed.entry[i].media$thumbnail.url; 
+ListImage= thumbUrl.replace("/s72-c/","/s"+ImageSize+"/"); 
+
+}
+// YouTube scan 
+else if (json.feed.entry[i].content.$t.match(/youtube\.com.*(\?v=|\/embed\/)(.{11})/) != null) 
+{ 
+    var youtube_id = json.feed.entry[i].content.$t.match(/youtube\.com.*(\?v=|\/embed\/)(.{11})/).pop(); 
+    
+    if (youtube_id.length == 11) { 
+        var ListImage = "'//img.youtube.com/vi/"+youtube_id+"/0.jpg'"; 
+        } 
+} 
+else if (json.feed.entry[i].content.$t.match(/src=(.+?[\.jpg|\.gif|\.png]")/) != null) 
+{ 
+// Support For 3rd Party Images 
+ListImage =  json.feed.entry[i].content.$t.match(/src=(.+?[\.jpg|\.gif|\.png]")/)[1]; 
+} 
+else 
+{ 
+ListImage= "'https://4.bp.blogspot.com/-HALLtgFeep0/VfryhQ0C5oI/AAAAAAAAPcY/77mSGND4q84/s200/Icon.png'"; 
+}
+
+var text = json.feed.entry[i].content.$t.match(/<span[^>]+class="moviename"[^>]*>[^>]*<\/span>/);
+var temp = (""+text+"");
+var moviename = temp.replace(/<\/?(span|div|img|p...)\b[^<>]*>/g, "");
+
+var lyrics = "<div class='table-row'><div class='table-cell bh-num'>"+count+"</div><div class='table-cell bh-song-title'><h4 class='bh-s-title name' itemprop='headline'><a href="+ListUrl+" title='"+ListTitles+"'>"+ListTitle+"</a></h4><span class='bh-movie-name'>"+moviename+"</span></div><a title='Lyrics' href="+ListUrl+"><div class='table-cell actions' title='Lyrics'><span class='icon-bh-music'></span></div></a></div>";
+var listingmureview =  lyrics;
+document.write(listingmureview);}
+
+}
+
+function trendinglyrics(json) { 
+for (var i = 0; i < ListCountnews; i++) 
+{  
+var count = (i+1);
+var videos = ListImage = newsUrl = ListImage = ListContent = ListConten = ListAuthor = ListTag = ListDate = ListUpdate = ListComments = thumbUrl = TotalPosts = sk = AuthorPic= ListMonth = Y = D = M = m = YY = DD = MM = mm = TT =  ""; 
+
+if (json.feed.entry[i].category != null) 
+{ 
+for (var k = 0; k < json.feed.entry[i].category.length; k++) { 
+ListTag += "<a href='/search/label/"+json.feed.entry[i].category[k].term+"'>"+json.feed.entry[i].category[k].term+"</a>"; 
+if(k < json.feed.entry[i].category.length-1) 
+{ ListTag += " ";} 
+} 
+} 
+
+for (var j = 0; j < json.feed.entry[i].link.length; j++) { 
+      if (json.feed.entry[i].link[j].rel == 'alternate') { 
+        break; 
+      } 
+    } 
+newsUrl= "'" + json.feed.entry[i].link[j].href + "'"; 
+var newsTitles = json.feed.entry[i].title.$t;
+var newsTitle =newsTitles.substring(0,90)+"...";
+ 
+TotalPosts = json.feed.openSearch$totalResults.$t; 
+
+
+if (json.feed.entry[i].thr$total) 
+{ 
+ListComments= "<a href='"+json.feed.entry[i].link[j].href+"#comment-form'>"+json.feed.entry[i].thr$total.$t+"</a>"; 
+} 
+ListAuthor= json.feed.entry[i].author[0].name.$t.split(" "); 
+ListAuthor=ListAuthor.slice(0, 1).join(" "); 
+AuthorPic = json.feed.entry[i].author[0].gd$image.src; 
+
+ListMonth= ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]; 
+ListDate= json.feed.entry[i].published.$t.substring(0,10); 
+                         Y = ListDate.substring(0, 4); 
+                        m = ListDate.substring(5, 7); 
+                         D = ListDate.substring(8, 10); 
+                         M = ListMonth[parseInt(m - 1)];                       
+ListUpdate= json.feed.entry[i].updated.$t.substring(0, 16); 
+                         YY = ListUpdate.substring(0, 4); 
+                        mm = ListUpdate.substring(5, 7); 
+                         DD = ListUpdate.substring(8, 10); 
+                         TT = ListUpdate.substring(11, 16); 
+                         MM = ListMonth[parseInt(mm - 1)];   
+
+
+if (json.feed.entry[i].media$thumbnail!=null) 
+{ 
+thumbUrl = json.feed.entry[i].media$thumbnail.url; 
+
+ListImage = thumbUrl.replace("/s72-c/","/s"+ImagewSize+"/");
+
+
+}
+
+else if (json.feed.entry[i].content.$t.match(/youtube\.com.*(\?v=|\/embed\/)(.{11})/) != null) 
+{ 
+    var youtube_id = json.feed.entry[i].content.$t.match(/youtube\.com.*(\?v=|\/embed\/)(.{11})/).pop(); 
+    
+    if (youtube_id.length == 11) { 
+        var ListImage = "'//img.youtube.com/vi/"+youtube_id+"/0.jpg'"; 
+        } 
+} 
+
+else if (json.feed.entry[i].content.$t.match(/src=(.+?[\.jpg|\.gif|\.png]")/) != null) 
+{ 
+// Support For 3rd Party Images 
+ListImage =  json.feed.entry[i].content.$t.match(/src=(.+?[\.jpg|\.gif|\.png]")/)[1]; 
+} 
+else 
+{ 
+ListImage= "'https://4.bp.blogspot.com/-HALLtgFeep0/VfryhQ0C5oI/AAAAAAAAPcY/77mSGND4q84/s200/Icon.png'"; 
+} 
+
+
+document.write ("<ul role='list' class='large-6 medium-6 small-12 columns no-bullet'>")
+
+ if (i<6 && ListDiv == 1) {var newsinphoto = "<li role='list-item' class='clearfix'><div class='count'>"+count+"</div><figure> <a href="+newsUrl+" title='"+newsTitles+"'><img class='image  wp-post-image' data-lazy-src="+ListImage+" height='156' itemprop='image url' role='img' sizes='(max-width: 137px) 100vw, 137px' src='https://3.bp.blogspot.com/-nFqnJG59ez4/Ww6pTTI2qeI/AAAAAAAAAoA/QqqyDqIoIAI1oGU5VpUUygUD6c73-nKfQCLcBGAs/s1600/1x1.trans.gif' srcset='"+ListImage+" 137w, "+ListImage+" 354w, "+ListImage+" 480w' title='"+newsTitles+"' width='165'/><meta content='"+ListImage+"' itemprop='url'/><meta content='137' itemprop='width'/><meta content='77' itemprop='height'/></a></figure><h5 class='entry-title name' itemprop='headline'><a href="+newsUrl+" title='"+newsTitles+"'><span itemprop='name'>"+newsTitles+"</span></a></h5></li>";
+	
+document.write(newsinphoto)
+           }
+document.write("</ul>")
+}
+} 
+
+var ListCount = 2; 
+var TitleCount = 20; 
+var ImageSize = 200; 
+
+
+function mtm2(json) { 
+for (var i = 0; i < ListCount; i++) 
+{  
+
+var listing= ListImage = ListUrl = ListTitle = ListImage = ListContent = ListConten = ListAuthor = ListTag = ListDate = ListUpdate = ListComments = thumbUrl = TotalPosts = sk = AuthorPic= ListMonth = Y = D = M = m = YY = DD = MM = mm = TT =  ""; 
+
+
+
+for (var j = 0; j < json.feed.entry[i].link.length; j++) { 
+      if (json.feed.entry[i].link[j].rel == 'alternate') { 
+        break; 
+      } 
+    } 
+ListUrl= "'" + json.feed.entry[i].link[j].href + "'"; 
+var postTitle = json.feed.entry[i].title.$t;
+
+TotalPosts = json.feed.openSearch$totalResults.$t; 
+if (json.feed.entry[i].title!= null) 
+{ 
+ListTitles= json.feed.entry[i].title.$t; 
+ListTitle= ListTitles.substring(0, ListTitles.indexOf('-'));
+}
+
+
+if (json.feed.entry[i].media$thumbnail!=null ) 
+{ 
+thumbUrl = json.feed.entry[i].media$thumbnail.url; 
+sk= thumbUrl.replace("/s72-c/","/s"+ImageSize+"/"); 
+ListImage= "'" + sk.replace("?imgmax=800","") + "'"; 
+}
+
+else if (json.feed.entry[i].content.$t.match(/youtube\.com.*(\?v=|\/embed\/)(.{11})/) != null) 
+{ 
+    var youtube_id = json.feed.entry[i].content.$t.match(/youtube\.com.*(\?v=|\/embed\/)(.{11})/).pop(); 
+    
+    if (youtube_id.length == 11) { 
+        var ListImage = "'//img.youtube.com/vi/"+youtube_id+"/hqdefault.jpg'"; 
+        } 
+} 
+else if (json.feed.entry[i].content.$t.match(/src=(.+?[\.jpg|\.gif|\.png]")/) != null) 
+{ 
+
+ListImage =  json.feed.entry[i].content.$t.match(/src=(.+?[\.jpg|\.gif|\.png]")/)[1]; 
+} 
+else 
+{ 
+ListImage= "'https://4.bp.blogspot.com/-HALLtgFeep0/VfryhQ0C5oI/AAAAAAAAPcY/77mSGND4q84/s200/Icon.png'"; 
+} 
+
+
+
+if (json.feed.entry[i].content.$t.match(/<span[^>]+class="box-office"[^>]*>[^>]*<\/span>/) != null) 
+{ 
+rk=  json.feed.entry[i].content.$t.match(/<span[^>]+class="box-office"[^>]*>[^>]*<\/span>/); 
+}
+else {
+rk = "00.00";
+}
+
+var pk= ""+rk+"";
+var text = pk.replace(/<\/?(span|div|img|p...)\b[^<>]*>/g, "");
+var postdate = new Date(text);
+var now = new Date();
+var postm = postdate.getMonth()+1;
+var nowm = now.getMonth()+1;
+var posty = postdate.getFullYear();
+var nowy = now.getFullYear();
+var posttime = postdate.getTime();
+var current = now.getTime();
+var month = new Array();
+    month[0] = "Jan";
+    month[1] = "Feb";
+    month[2] = "Mar";
+    month[3] = "Apr";
+    month[4] = "May";
+    month[5] = "June";
+    month[6] = "July";
+    month[7] = "Aug";
+    month[8] = "Sep";
+    month[9] = "Oct";
+    month[10] = "Nov";
+    month[11] = "Dec";
+    var n = month[postdate.getMonth()];
+ d = postdate.getDate();
+
+
+ var print = "<div class='large-5 medium-5 small-5 columns bh-first-column'><div class='large'><div class='movie-revenue'><div class='rupee'> <i class='icon-rupee'></i><div class='amount'><a data-pjax href="+ListUrl+" title='"+ListTitle+" Box Office Collection is Rupees "+text+"'>"+text+"</a></div><div class='unit'>crores</div></div></div><div class='movie-name'><a data-pjax class='truncate' href="+ListUrl+" title='"+ListTitle+"'>"+ListTitle+"</a></div></div></div>"; 
+ 
+ 
+ if (i==0){
+ document.write(print);}
+}
+} 
+
+var ListCount = 5; 
+var TitleCount = 20; 
+var ImageSize = 200; 
+function mtm3(json) { 
+for (var i = 0; i < ListCount; i++) 
+{  
+var listing= ListImage = ListUrl = ListTitle = ListImage = ListContent = ListConten = ListAuthor = ListTag = ListDate = ListUpdate = ListComments = thumbUrl = TotalPosts = sk = AuthorPic= ListMonth = Y = D = M = m = YY = DD = MM = mm = TT =  ""; 
+for (var j = 0; j < json.feed.entry[i].link.length; j++) { 
+      if (json.feed.entry[i].link[j].rel == 'alternate') { 
+        break; 
+      } 
+    } 
+ListUrl= "'" + json.feed.entry[i].link[j].href + "'"; 
+var postTitle = json.feed.entry[i].title.$t;
+
+TotalPosts = json.feed.openSearch$totalResults.$t; 
+if (json.feed.entry[i].title!= null) 
+{ 
+ListTitles= json.feed.entry[i].title.$t; 
+ListTitle= ListTitles.substring(0, ListTitles.indexOf('-'));
+}
+
+if (json.feed.entry[i].media$thumbnail!=null ) 
+{ 
+thumbUrl = json.feed.entry[i].media$thumbnail.url; 
+sk= thumbUrl.replace("/s72-c/","/s"+ImageSize+"/"); 
+ListImage= "'" + sk.replace("?imgmax=800","") + "'"; 
+}
+else if (json.feed.entry[i].content.$t.match(/youtube\.com.*(\?v=|\/embed\/)(.{11})/) != null) 
+{ 
+    var youtube_id = json.feed.entry[i].content.$t.match(/youtube\.com.*(\?v=|\/embed\/)(.{11})/).pop(); 
+    
+    if (youtube_id.length == 11) { 
+        var ListImage = "'//img.youtube.com/vi/"+youtube_id+"/hqdefault.jpg'"; 
+        } 
+} 
+else if (json.feed.entry[i].content.$t.match(/src=(.+?[\.jpg|\.gif|\.png]")/) != null) 
+{ 
+
+ListImage =  json.feed.entry[i].content.$t.match(/src=(.+?[\.jpg|\.gif|\.png]")/)[1]; 
+} 
+else 
+{ 
+ListImage= "'https://4.bp.blogspot.com/-HALLtgFeep0/VfryhQ0C5oI/AAAAAAAAPcY/77mSGND4q84/s200/Icon.png'"; 
+} 
+
+
+
+if (json.feed.entry[i].content.$t.match(/<span[^>]+class="box-office"[^>]*>[^>]*<\/span>/) != null) 
+{ 
+rk=  json.feed.entry[i].content.$t.match(/<span[^>]+class="box-office"[^>]*>[^>]*<\/span>/); 
+}
+else {
+rk = "00.00";
+}
+
+var pk= ""+rk+" 18:00:00";
+var text = pk.replace(/<\/?(span|div|img|p...)\b[^<>]*>/g, "");
+var postdate = new Date(text);
+var now = new Date();
+var postm = postdate.getMonth()+1;
+var nowm = now.getMonth()+1;
+var posty = postdate.getFullYear();
+var nowy = now.getFullYear();
+var posttime = postdate.getTime();
+var current = now.getTime();
+var month = new Array();
+    month[0] = "Jan";
+    month[1] = "Feb";
+    month[2] = "Mar";
+    month[3] = "Apr";
+    month[4] = "May";
+    month[5] = "June";
+    month[6] = "July";
+    month[7] = "Aug";
+    month[8] = "Sep";
+    month[9] = "Oct";
+    month[10] = "Nov";
+    month[11] = "Dec";
+    var n = month[postdate.getMonth()];
+ d = postdate.getDate();
+
+
+var print = "<div class='medium table-cell'><div class='rupee'> <i class='icon-rupee'></i><div class='amount'><a data-pjax href="+ListUrl+" title='"+ListTitle+" Box Office Collection is Rupees "+text+"'>"+rk+"</a></div><div class='unit'>crores</div></div><div class='movie-name'><a data-pjax class='truncate' href="+ListUrl+" title='"+ListTitle+"'>"+ListTitle+"</a></div></div>"; 
+
+var print2 = "<div class='small table-cell'><div class='rupee'> <i class='icon-rupee'></i><div class='amount'><a data-pjax href="+ListUrl+" title='"+ListTitle+"'>"+rk+"</a></div><div class='unit'>crores</div></div><div class='movie-name'><a data-pjax class='truncate' href="+ListUrl+" title='"+ListTitle+"'>"+ListTitle+"</a></div></div>";
+ 
+ 
+ if (i==1){
+ document.write(print);}
+
+
+if (i==2){
+ document.write(print2);}
+}
+} 
+
+var ListCount = 5; 
+var TitleCount = 20; 
+var ImageSize = 200; 
+function mtm4(json) { 
+for (var i = 0; i < ListCount; i++) 
+{  
+var listing= ListImage = ListUrl = ListTitle = ListImage = ListContent = ListConten = ListAuthor = ListTag = ListDate = ListUpdate = ListComments = thumbUrl = TotalPosts = sk = AuthorPic= ListMonth = Y = D = M = m = YY = DD = MM = mm = TT =  ""; 
+for (var j = 0; j < json.feed.entry[i].link.length; j++) { 
+      if (json.feed.entry[i].link[j].rel == 'alternate') { 
+        break; 
+      } 
+    } 
+ListUrl= "'" + json.feed.entry[i].link[j].href + "'"; 
+var postTitle = json.feed.entry[i].title.$t;
+
+TotalPosts = json.feed.openSearch$totalResults.$t; 
+if (json.feed.entry[i].title!= null) 
+{ 
+ListTitles= json.feed.entry[i].title.$t; 
+ListTitle= ListTitles.substring(0, ListTitles.indexOf('-'));
+}
+
+if (json.feed.entry[i].media$thumbnail!=null ) 
+{ 
+thumbUrl = json.feed.entry[i].media$thumbnail.url; 
+sk= thumbUrl.replace("/s72-c/","/s"+ImageSize+"/"); 
+ListImage= "'" + sk.replace("?imgmax=800","") + "'"; 
+}
+else if (json.feed.entry[i].content.$t.match(/youtube\.com.*(\?v=|\/embed\/)(.{11})/) != null) 
+{ 
+    var youtube_id = json.feed.entry[i].content.$t.match(/youtube\.com.*(\?v=|\/embed\/)(.{11})/).pop(); 
+    
+    if (youtube_id.length == 11) { 
+        var ListImage = "'//img.youtube.com/vi/"+youtube_id+"/hqdefault.jpg'"; 
+        } 
+} 
+else if (json.feed.entry[i].content.$t.match(/src=(.+?[\.jpg|\.gif|\.png]")/) != null) 
+{ 
+ListImage =  json.feed.entry[i].content.$t.match(/src=(.+?[\.jpg|\.gif|\.png]")/)[1]; 
+} 
+else 
+{ 
+ListImage= "'https://4.bp.blogspot.com/-HALLtgFeep0/VfryhQ0C5oI/AAAAAAAAPcY/77mSGND4q84/s200/Icon.png'"; 
+} 
+if (json.feed.entry[i].content.$t.match(/<span[^>]+class="box-office"[^>]*>[^>]*<\/span>/) != null) 
+{ 
+rk =  json.feed.entry[i].content.$t.match(/<span[^>]+class="box-office"[^>]*>[^>]*<\/span>/); 
+}
+else {
+rk = "00.00";
+}
+var pk= ""+rk+" 18:00:00";
+var text = pk.replace(/<\/?(span|div|img|p...)\b[^<>]*>/g, "");
+var postdate = new Date(text);
+var now = new Date();
+var postm = postdate.getMonth()+1;
+var nowm = now.getMonth()+1;
+var posty = postdate.getFullYear();
+var nowy = now.getFullYear();
+var posttime = postdate.getTime();
+var current = now.getTime();
+var month = new Array();
+    month[0] = "Jan";
+    month[1] = "Feb";
+    month[2] = "Mar";
+    month[3] = "Apr";
+    month[4] = "May";
+    month[5] = "June";
+    month[6] = "July";
+    month[7] = "Aug";
+    month[8] = "Sep";
+    month[9] = "Oct";
+    month[10] = "Nov";
+    month[11] = "Dec";
+    var n = month[postdate.getMonth()];
+ d = postdate.getDate();
+
+
+var print = "<div class='medium table-cell'><div class='rupee'> <i class='icon-rupee'></i><div class='amount'><a data-pjax href="+ListUrl+" title='"+ListTitle+" Box Office Collection is Rupees "+text+"'>"+rk+"</a></div><div class='unit'>crores</div></div><div class='movie-name'><a data-pjax class='truncate' href="+ListUrl+" title='"+ListTitle+"'>"+ListTitle+"</a></div></div>"; 
+
+var print2 = "<div class='small table-cell'><div class='rupee'> <i class='icon-rupee'></i><div class='amount'><a data-pjax href="+ListUrl+" title='"+ListTitle+"'>"+rk+"</a></div><div class='unit'>crores</div></div><div class='movie-name'><a data-pjax class='truncate' href="+ListUrl+" title='"+ListTitle+"'>"+ListTitle+"</a></div></div>";
+if (i==3){
+ document.write(print);}
+if (i==4){
+ document.write(print2);}
+}
+}
+
+var songcount = 10; 
+var TitleCount = 20; 
+var AlbumSize = 200; 
+function jukebox(json) { 
+for (var i = 0; i < songcount; i++) 
+{  
+var listing= ListImage = ListUrl = ListTitle = ListImage = ListContent = ListConten = ListAuthor = ListTag = ListDate = ListUpdate = ListComments = thumbUrl = TotalPosts = sk = AuthorPic= ListMonth = Y = D = M = m = YY = DD = MM = mm = TT =  ""; 
+for (var j = 0; j < json.feed.entry[i].link.length; j++) { 
+      if (json.feed.entry[i].link[j].rel == 'alternate') { 
+        break; 
+      } 
+    } 
+ListUrl= "'" + json.feed.entry[i].link[j].href + "'"; 
+var postTitle = json.feed.entry[i].title.$t;
+var songID = json.feed.entry[i].id.$t.split('post-')[1]; 
+TotalPosts = json.feed.openSearch$totalResults.$t; 
+if (json.feed.entry[i].title!= null) 
+{ 
+ListTitles= json.feed.entry[i].title.$t; 
+ListTitle= ListTitles.substring(0, ListTitles.indexOf('-'));
+}
+if (json.feed.entry[i].media$thumbnail!=null ) 
+{ 
+thumbUrl = json.feed.entry[i].media$thumbnail.url; 
+sk= thumbUrl.replace("/s72-c/","/s"+AlbumSize+"/"); 
+ListImage= "'" + sk.replace("?imgmax=800","") + "'"; 
+}
+else if (json.feed.entry[i].content.$t.match(/youtube\.com.*(\?v=|\/embed\/)(.{11})/) != null) 
+{ 
+    var youtube_id = json.feed.entry[i].content.$t.match(/youtube\.com.*(\?v=|\/embed\/)(.{11})/).pop(); 
+    if (youtube_id.length == 11) { 
+        var ListImage = "'//img.youtube.com/vi/"+youtube_id+"/hqdefault.jpg'"; 
+        } 
+} 
+else if (json.feed.entry[i].content.$t.match(/src=(.+?[\.jpg|\.gif|\.png]")/) != null) 
+{ 
+ListImage =  json.feed.entry[i].content.$t.match(/src=(.+?[\.jpg|\.gif|\.png]")/)[1]; 
+} 
+else 
+{ 
+ListImage= "'https://4.bp.blogspot.com/-HALLtgFeep0/VfryhQ0C5oI/AAAAAAAAPcY/77mSGND4q84/s200/Icon.png'"; 
+} 
+if (json.feed.entry[i].content.$t.match(/<span[^>]+class="moviename"[^>]*>[^>]*<\/span>/) != null) 
+{ 
+rk=  json.feed.entry[i].content.$t.match(/<span[^>]+class="moviename"[^>]*>[^>]*<\/span>/); 
+pk= ""+rk+"";
+moviename = pk.replace(/<\/?(span|div|img|p...)\b[^<>]*>/g, "");
+}
+else {
+moviename = "";
+}
+if (json.feed.entry[i].content.$t.match(/<span[^>]+class="singername"[^>]*>[^>]*<\/span>/) != null) 
+{ 
+singer_arry=  json.feed.entry[i].content.$t.match(/<span[^>]+class="singername"[^>]*>[^>]*<\/span>/); 
+singer_st = ""+singer_arry+"";
+var singer_rp = singer_st.replace(/<\/?(span|div|img|p...)\b[^<>]*>/g, "");
+str_array = singer_rp.split(',');
+textsinger = "";
+var k;
+for (k = 0; k < str_array.length; k++) {
+ textsinger += "<span class='meta-entry'>";
+ textsinger += "<span itemprop='byArtist'>";
+ textsinger +="<a data-pjax='#' href='/search/label/"+str_array[k]+"' title='"+ str_array[k]+"'>" + str_array[k] +"</a>"; 
+}
+}
+else {
+textsinger  = "";
+}
+var print = "<li itemscope='' itemtype='https://schema.org/MusicPlaylist'><div itemprop='track' itemscope='' itemtype='https://schema.org/MusicRecording'><div class='bh-movie-music-table-upper clearfix'><div class='t-cell bh-ts-expand'> <span class='expand-row icon-bh-round-plus' title='Expand' data-alt-text='Collapse'></span></div><div class='t-cell bh-ts-play'> <span class='icon-play-2 round-bg bh-mm-music-play' data-id="+songID+" title='Play'></span></div><div class='t-cell bh-ts-checkbox'> <input type='checkbox' class='bh-mm-cb-songs' data-id="+songID+"></div><div class='t-cell bh-ts-movie-title' data-name='"+ListTitle+"'><h4 class='bh-movie-name name'> <a data-pjax='' itemprop='url' href="+ListUrl+" title='"+ListTitle+"'> <span itemprop='name'>"+ListTitle+"</span> </a></h4><meta itemprop='inAlbum' content='"+moviename+"'><div class='bh-movie-meta'><div><strong>Singers: </strong>"+textsinger+"</div></div></div><div class='t-cell bh-ts-actions'> <a data-pjax='' href="+ListUrl+" title='"+ListTitle+"'><span class='icon-bh-music round-bg'></span></a></div></div><div class='bh-movie-music-table-bottom clearfix'><ul class='bmmtb-colum no-bullet'><li class='mmt-row'><div class='mmt-label'>Singers</div>"+textsinger+"</li><li class='mmt-row'><div class='mmt-label'>Music Director</div>N/A</li><li class='mmt-row'><div class='mmt-label'>Lyricist</div>N/A</li><li class='mmt-row'><div class='mmt-label'>Genre</div>N/A</li><li class='mmt-row'><div class='mmt-label'>Song Picturized On</div>N/A</li></ul></div></div></li>"; 
+    document.write(print); 
+}
+} 
+
+var ImageSizeP="322-h222-s";
+var ry='<h2 class="ymal-title name large-12 column">Recommended for you</h2></br>';rn='<h2 class="ymal-title name large-12 column">No Recommended News For You</h2>';rcomment='comments';rdisable='disable comments';commentYN='yes';
+var dw='';titles=new Array();titlesNum=0;urls=new Array();timeR=new Array();thumb=new Array();commentsNum=new Array();comments=new Array();function related_results_labels(c){for(var b=0;b<c.feed.entry.length;b++){var d=c.feed.entry[b];titles[titlesNum]=d.title.$t;for(var a=0;a<d.link.length;a++){if('thr$total' in d){commentsNum[titlesNum]=d.thr$total.$t+' '+rcomment}else{commentsNum[titlesNum]=rdisable};if(d.link[a].rel=="alternate"){urls[titlesNum]=d.link[a].href;timeR[titlesNum]=d.published.$t;if(c.feed.entry[b].media$thumbnail!=null){thumb[titlesNum]=c.feed.entry[b].media$thumbnail.url.replace("/s72-c/","/w"+ImageSizeP+"/")}else if(c.feed.entry[b].content.$t.match(/src=(.+?[\.jpg|\.gif|\.png]")/) != null){thumb[titlesNum]=c.feed.entry[b].content.$t.match(/src=(.+?[\.jpg|\.gif|\.png]")/)[1]}else{thumb[titlesNum]='https://3.bp.blogspot.com/-ZRo8fwgs65M/UZC2jMJpcLI/AAAAAAAAC5Y/EfoFQsr1wzU/s1600/BS+No+Image.gif '};titlesNum++;break}}}}function removeRelatedDuplicates(){var b=new Array(0);c=new Array(0);e=new Array(0);f=new Array(0);g=new Array(0);for(var a=0;a<urls.length;a++){if(!contains(b,urls[a])){b.length+=1;b[b.length-1]=urls[a];c.length+=1;c[c.length-1]=titles[a];e.length+=1;e[e.length-1]=timeR[a];f.length+=1;f[f.length-1]=thumb[a];g.length+=1;g[g.length-1]=commentsNum[a]}}urls=b;titles=c;timeR=e;thumb=f;commentsNum=g}function contains(b,d){for(var c=0;c<b.length;c++){if(b[c]==d){return true}}return false}function printRelatedLabels(a){var y=a.indexOf('?m=0');if(y!=-1){a=a.replace(/\?m=0/g,'')}for(var b=0;b<urls.length;b++){if(urls[b]==a){urls.splice(b,1);titles.splice(b,1);timeR.splice(b,1);thumb.splice(b,1);commentsNum.splice(b,1)}}var c=Math.floor((titles.length-1)*Math.random());var b=0;if(titles.length==0){dw+=rn}else{dw+=ry;dw+='';while(b<titles.length&&b<20&&b<maxresults){if(y!=-1){urls[c]=urls[c]+'?m=0'}if(commentYN=='yes'){comments[c]=' - '+commentsNum[c]}else{comments[c]=''};dw+='<div class="large-4 medium-4 small-12 column hentry" itemscope itemtype="https://schema.org/Article"><figure itemprop="image" itemscope itemtype="https://schema.org/ImageObject" class="bh-thumb"><a href="'+urls[c]+'"><img alt="'+titles[c]+'" src='+thumb[c]+'></img></a></figure><div class="content-wrap"><h3 itemprop="headline" class="entry-title name"><a href="'+urls[c]+'" title="'+titles[c]+'" >'+titles[c].substring(0,50)+"..."+'</a></h3></div></div>';if(c<titles.length-1){c++}else{c=0}b++}dw+=''};urls.splice(0,urls.length);titles.splice(0,titles.length);document.getElementById('btnt-related-posts').innerHTML=dw};
+
+function newstrack(json) { 
+for (var i = 0; i < ListCountnews; i++) 
+{  
+
+var videos = ListImage = newsUrl = ListImage = ListContent = ListConten = ListAuthor = ListTag = ListDate = ListUpdate = ListComments = thumbUrl = TotalPosts = sk = AuthorPic= ListMonth = Y = D = M = m = YY = DD = MM = mm = TT =  ""; 
+
+if (json.feed.entry[i].category != null) 
+{ 
+for (var k = 0; k < json.feed.entry[i].category.length; k++) { 
+ListTag += "<a href='/search/label/"+json.feed.entry[i].category[k].term+"'>"+json.feed.entry[i].category[k].term+"</a>"; 
+if(k < json.feed.entry[i].category.length-1) 
+{ ListTag += " ";} 
+} 
+} 
+
+for (var j = 0; j < json.feed.entry[i].link.length; j++) { 
+      if (json.feed.entry[i].link[j].rel == 'alternate') { 
+        break; 
+      } 
+    } 
+newsUrl= "'" + json.feed.entry[i].link[j].href + "'"; 
+var newsTitle = json.feed.entry[i].title.$t;
+var newsTitles = newsTitle.substring(0,70)+"...";
+ 
+TotalPosts = json.feed.openSearch$totalResults.$t; 
+
+
+if (json.feed.entry[i].thr$total) 
+{ 
+ListComments= "<a href='"+json.feed.entry[i].link[j].href+"#comment-form'>"+json.feed.entry[i].thr$total.$t+"</a>"; 
+} 
+ListAuthor= json.feed.entry[i].author[0].name.$t.split(" "); 
+ListAuthor=ListAuthor.slice(0, 1).join(" "); 
+AuthorPic = json.feed.entry[i].author[0].gd$image.src; 
+
+ListMonth= ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]; 
+ListDate= json.feed.entry[i].published.$t.substring(0,10); 
+                         Y = ListDate.substring(0, 4); 
+                        m = ListDate.substring(5, 7); 
+                         D = ListDate.substring(8, 10); 
+                         M = ListMonth[parseInt(m - 1)];                       
+ListUpdate= json.feed.entry[i].updated.$t.substring(0, 16); 
+                         YY = ListUpdate.substring(0, 4); 
+                        mm = ListUpdate.substring(5, 7); 
+                         DD = ListUpdate.substring(8, 10); 
+                         TT = ListUpdate.substring(11, 16); 
+                         MM = ListMonth[parseInt(mm - 1)];   
+
+
+if (json.feed.entry[i].media$thumbnail!=null) 
+{ 
+thumbUrl = json.feed.entry[i].media$thumbnail.url; 
+
+ListImage = thumbUrl.replace("/s72-c/","/s"+ImagewSize+"/");
+
+}
+
+else if (json.feed.entry[i].content.$t.match(/youtube\.com.*(\?v=|\/embed\/)(.{11})/) != null) 
+{ 
+    var youtube_id = json.feed.entry[i].content.$t.match(/youtube\.com.*(\?v=|\/embed\/)(.{11})/).pop(); 
+    
+    if (youtube_id.length == 11) { 
+        var ListImage = "'//img.youtube.com/vi/"+youtube_id+"/0.jpg'"; 
+        } 
+} 
+
+else if (json.feed.entry[i].content.$t.match(/src=(.+?[\.jpg|\.gif|\.png]")/) != null) 
+{ 
+// Support For 3rd Party Images 
+ListImage =  json.feed.entry[i].content.$t.match(/src=(.+?[\.jpg|\.gif|\.png]")/)[1]; 
+} 
+else 
+{ 
+ListImage= "'https://4.bp.blogspot.com/-HALLtgFeep0/VfryhQ0C5oI/AAAAAAAAPcY/77mSGND4q84/s200/Icon.png'"; 
+} 
+var news = "<li class='hentry' itemscope='itemscope' itemtype='https://schema.org/Article'><figure class='bh-thumb gg left bh-mr-10' itemprop='image' itemscope='itemscope' itemtype='https://schema.org/ImageObject'> <a href="+newsUrl+" title='"+newsTitle+"'><img class='image  wp-post-image' data-lazy-src="+ListImage+" height='77' itemprop='image url' role='img' sizes='(max-width: 137px) 100vw, 137px' src='https://3.bp.blogspot.com/-nFqnJG59ez4/Ww6pTTI2qeI/AAAAAAAAAoA/QqqyDqIoIAI1oGU5VpUUygUD6c73-nKfQCLcBGAs/s1600/1x1.trans.gif' srcset='"+ListImage+" 137w, "+ListImage+" 354w, "+ListImage+" 480w' title='"+newsTitle+"' width='137'/><meta content='"+ListImage+"' itemprop='url'/><meta content='137' itemprop='width'/><meta content='77' itemprop='height'/></a></figure><div class='overflow '><h3 class='entry-title name' itemprop='headline'><a href="+newsUrl+" title='"+newsTitle+"'><span itemprop='name'>"+newsTitles+"</span></a></h3></div></li>";
+document.write(news)
+}
+} 
+
+function Lnewstrack(json) { 
+for (var i = 0; i < ListCountnews; i++) 
+{  
+
+var videos = ListImage = newsUrl = ListImage = ListContent = ListConten = ListAuthor = ListTag = ListDate = ListUpdate = ListComments = thumbUrl = TotalPosts = sk = AuthorPic= ListMonth = Y = D = M = m = YY = DD = MM = mm = TT =  ""; 
+
+if (json.feed.entry[i].category != null) 
+{ 
+for (var k = 0; k < json.feed.entry[i].category.length; k++) { 
+ListTag += "<a href='/search/label/"+json.feed.entry[i].category[k].term+"'>"+json.feed.entry[i].category[k].term+"</a>"; 
+if(k < json.feed.entry[i].category.length-1) 
+{ ListTag += " ";} 
+} 
+} 
+
+for (var j = 0; j < json.feed.entry[i].link.length; j++) { 
+      if (json.feed.entry[i].link[j].rel == 'alternate') { 
+        break; 
+      } 
+    } 
+newsUrl= "'" + json.feed.entry[i].link[j].href + "'"; 
+var newsTitles = json.feed.entry[i].title.$t;
+var newsTitle = newsTitles.substring(0,60)+"...";
+ 
+TotalPosts = json.feed.openSearch$totalResults.$t; 
+
+
+if (json.feed.entry[i].thr$total) 
+{ 
+ListComments= "<a href='"+json.feed.entry[i].link[j].href+"#comment-form'>"+json.feed.entry[i].thr$total.$t+"</a>"; 
+} 
+ListAuthor= json.feed.entry[i].author[0].name.$t.split(" "); 
+ListAuthor=ListAuthor.slice(0, 1).join(" "); 
+AuthorPic = json.feed.entry[i].author[0].gd$image.src; 
+
+ListMonth= ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]; 
+ListDate= json.feed.entry[i].published.$t.substring(0,10); 
+                         Y = ListDate.substring(0, 4); 
+                        m = ListDate.substring(5, 7); 
+                         D = ListDate.substring(8, 10); 
+                         M = ListMonth[parseInt(m - 1)];                       
+ListUpdate= json.feed.entry[i].updated.$t.substring(0, 16); 
+                         YY = ListUpdate.substring(0, 4); 
+                        mm = ListUpdate.substring(5, 7); 
+                         DD = ListUpdate.substring(8, 10); 
+                         TT = ListUpdate.substring(11, 16); 
+                         MM = ListMonth[parseInt(mm - 1)];   
+
+if (json.feed.entry[i].content.$t.match(/youtube\.com.*(\?v=|\/embed\/)(.{11})/) != null) 
+{ 
+    var youtube_id = json.feed.entry[i].content.$t.match(/youtube\.com.*(\?v=|\/embed\/)(.{11})/).pop(); 
+    
+    if (youtube_id.length == 11) { 
+        var ListImage = "'//img.youtube.com/vi/"+youtube_id+"/0.jpg'"; 
+        } 
+} 
+else if (json.feed.entry[i].media$thumbnail!=null) 
+{ 
+thumbUrl = json.feed.entry[i].media$thumbnail.url; 
+
+ListImage = thumbUrl.replace("/s72-c/","/s"+ImagewSize+"/");
+
+
+}
+
+else if (json.feed.entry[i].content.$t.match(/src=(.+?[\.jpg|\.gif|\.png]")/) != null) 
+{ 
+// Support For 3rd Party Images 
+ListImage =  json.feed.entry[i].content.$t.match(/src=(.+?[\.jpg|\.gif|\.png]")/)[1]; 
+} 
+else 
+{ 
+ListImage= "'https://4.bp.blogspot.com/-HALLtgFeep0/VfryhQ0C5oI/AAAAAAAAPcY/77mSGND4q84/s200/Icon.png'"; 
+} 
+
+if (i>=5){var latestnews = "<li class='vdo-thumb' role='listitem'><figure itemprop='image' itemscope='itemscope' itemtype='https://schema.org/ImageObject'> <a href="+newsUrl+" title='"+newsTitle+"'> <img src="+ListImage+"></img> </a></figure><h5 class='entry-title name' itemprop='headline'> <a href="+newsUrl+" title='"+newsTitle+"'> "+newsTitle+"</a></h5></li>";
+	
+document.write(latestnews)
+}
+}
+} 
+
+function Lnewstrack(json) { 
+for (var i = 0; i < ListCountnews; i++) 
+{  
+
+var videos = ListImage = newsUrl = ListImage = ListContent = ListConten = ListAuthor = ListTag = ListDate = ListUpdate = ListComments = thumbUrl = TotalPosts = sk = AuthorPic= ListMonth = Y = D = M = m = YY = DD = MM = mm = TT =  ""; 
+
+if (json.feed.entry[i].category != null) 
+{ 
+for (var k = 0; k < json.feed.entry[i].category.length; k++) { 
+ListTag += "<a href='/search/label/"+json.feed.entry[i].category[k].term+"'>"+json.feed.entry[i].category[k].term+"</a>"; 
+if(k < json.feed.entry[i].category.length-1) 
+{ ListTag += " ";} 
+} 
+} 
+
+for (var j = 0; j < json.feed.entry[i].link.length; j++) { 
+      if (json.feed.entry[i].link[j].rel == 'alternate') { 
+        break; 
+      } 
+    } 
+newsUrl= "'" + json.feed.entry[i].link[j].href + "'"; 
+var newsTitle = json.feed.entry[i].title.$t;
+ 
+TotalPosts = json.feed.openSearch$totalResults.$t; 
+
+
+if (json.feed.entry[i].thr$total) 
+{ 
+ListComments= "<a href='"+json.feed.entry[i].link[j].href+"#comment-form'>"+json.feed.entry[i].thr$total.$t+"</a>"; 
+} 
+ListAuthor= json.feed.entry[i].author[0].name.$t.split(" "); 
+ListAuthor=ListAuthor.slice(0, 1).join(" "); 
+AuthorPic = json.feed.entry[i].author[0].gd$image.src; 
+
+ListMonth= ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]; 
+ListDate= json.feed.entry[i].published.$t.substring(0,10); 
+                         Y = ListDate.substring(0, 4); 
+                        m = ListDate.substring(5, 7); 
+                         D = ListDate.substring(8, 10); 
+                         M = ListMonth[parseInt(m - 1)];                       
+ListUpdate= json.feed.entry[i].updated.$t.substring(0, 16); 
+                         YY = ListUpdate.substring(0, 4); 
+                        mm = ListUpdate.substring(5, 7); 
+                         DD = ListUpdate.substring(8, 10); 
+                         TT = ListUpdate.substring(11, 16); 
+                         MM = ListMonth[parseInt(mm - 1)];   
+
+if (json.feed.entry[i].content.$t.match(/youtube\.com.*(\?v=|\/embed\/)(.{11})/) != null) 
+{ 
+    var youtube_id = json.feed.entry[i].content.$t.match(/youtube\.com.*(\?v=|\/embed\/)(.{11})/).pop(); 
+    
+    if (youtube_id.length == 11) { 
+        var ListImage = "'//img.youtube.com/vi/"+youtube_id+"/0.jpg'"; 
+        } 
+} 
+else if (json.feed.entry[i].media$thumbnail!=null) 
+{ 
+thumbUrl = json.feed.entry[i].media$thumbnail.url; 
+
+ListImage = thumbUrl.replace("/s72-c/","/s"+ImagewSize+"/");
+
+
+}
+
+else if (json.feed.entry[i].content.$t.match(/src=(.+?[\.jpg|\.gif|\.png]")/) != null) 
+{ 
+// Support For 3rd Party Images 
+ListImage =  json.feed.entry[i].content.$t.match(/src=(.+?[\.jpg|\.gif|\.png]")/)[1]; 
+} 
+else 
+{ 
+ListImage= "'https://4.bp.blogspot.com/-HALLtgFeep0/VfryhQ0C5oI/AAAAAAAAPcY/77mSGND4q84/s200/Icon.png'"; 
+} 
+
+var latestnews = "<li class='vdo-thumb' role='listitem'><figure itemprop='image' itemscope='itemscope' itemtype='https://schema.org/ImageObject'> <a href="+newsUrl+" title='"+newsTitle+"'> <img src="+ListImage+"></img> </a></figure><h5 class='entry-title name' itemprop='headline'> <a href="+newsUrl+" title='"+newsTitle+"'> "+newsTitle+"</a></h5></li>";
+	
+document.write(latestnews)
+
+}
+ 
+function Celeb(json) { 
+for (var i = 0; i < ListCountnews; i++) 
+{  
+
+var videos = ListImage = newsUrl = ListImage = ListContent = ListConten = ListAuthor = ListTag = ListDate = ListUpdate = ListComments = thumbUrl = TotalPosts = sk = AuthorPic= ListMonth = Y = D = M = m = YY = DD = MM = mm = TT =  ""; 
+
+if (json.feed.entry[i].category != null) 
+{ 
+for (var k = 0; k < json.feed.entry[i].category.length; k++) { 
+ListTag += "<a href='/search/label/"+json.feed.entry[i].category[k].term+"'>"+json.feed.entry[i].category[k].term+"</a>"; 
+if(k < json.feed.entry[i].category.length-1) 
+{ ListTag += " ";} 
+} 
+} 
+
+for (var j = 0; j < json.feed.entry[i].link.length; j++) { 
+      if (json.feed.entry[i].link[j].rel == 'alternate') { 
+        break; 
+      } 
+    } 
+newsUrl= "'" + json.feed.entry[i].link[j].href + "'"; 
+var newsTitle = json.feed.entry[i].title.$t;
+ 
+TotalPosts = json.feed.openSearch$totalResults.$t; 
+
+
+if (json.feed.entry[i].thr$total) 
+{ 
+ListComments= "<a href='"+json.feed.entry[i].link[j].href+"#comment-form'>"+json.feed.entry[i].thr$total.$t+"</a>"; 
+} 
+ListAuthor= json.feed.entry[i].author[0].name.$t.split(" "); 
+ListAuthor=ListAuthor.slice(0, 1).join(" "); 
+AuthorPic = json.feed.entry[i].author[0].gd$image.src; 
+
+ListMonth= ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]; 
+ListDate= json.feed.entry[i].published.$t.substring(0,10); 
+                         Y = ListDate.substring(0, 4); 
+                        m = ListDate.substring(5, 7); 
+                         D = ListDate.substring(8, 10); 
+                         M = ListMonth[parseInt(m - 1)];                       
+ListUpdate= json.feed.entry[i].updated.$t.substring(0, 16); 
+                         YY = ListUpdate.substring(0, 4); 
+                        mm = ListUpdate.substring(5, 7); 
+                         DD = ListUpdate.substring(8, 10); 
+                         TT = ListUpdate.substring(11, 16); 
+                         MM = ListMonth[parseInt(mm - 1)];   
+
+
+if (json.feed.entry[i].media$thumbnail!=null) 
+{ 
+thumbUrl = json.feed.entry[i].media$thumbnail.url; 
+
+ListImage = thumbUrl.replace("/s72-c/","/s"+ImagewSize+"/");
+}
+
+
+
+else if (json.feed.entry[i].content.$t.match(/src=(.+?[\.jpg|\.gif|\.png]")/) != null) 
+{ 
+// Support For 3rd Party Images 
+ListImage =  json.feed.entry[i].content.$t.match(/src=(.+?[\.jpg|\.gif|\.png]")/)[1]; 
+} 
+else 
+{ 
+ListImage= "'https://4.bp.blogspot.com/-HALLtgFeep0/VfryhQ0C5oI/AAAAAAAAPcY/77mSGND4q84/s200/Icon.png'"; 
+} 
+
+var CelebPrint = "<li class='vdo-thumb' role='listitem'><figure itemprop='image' itemscope='itemscope' itemtype='https://schema.org/ImageObject'> <a href="+newsUrl+" title='"+newsTitle+"'> <img src="+ListImage+"></img> </a></figure></li>";
+	
+document.write(CelebPrint)
+
+}
+ 
+
+} 
+
+} 
+
+function newstrackinphoto(json) { 
+for (var i = 0; i < ListCountnews; i++) 
+{  
+
+var videos = ListImage = newsUrl = ListImage = ListContent = ListConten = ListAuthor = ListTag = ListDate = ListUpdate = ListComments = thumbUrl = TotalPosts = sk = AuthorPic= ListMonth = Y = D = M = m = YY = DD = MM = mm = TT =  ""; 
+
+if (json.feed.entry[i].category != null) 
+{ 
+for (var k = 0; k < json.feed.entry[i].category.length; k++) { 
+ListTag += "<a href='/search/label/"+json.feed.entry[i].category[k].term+"'>"+json.feed.entry[i].category[k].term+"</a>"; 
+if(k < json.feed.entry[i].category.length-1) 
+{ ListTag += " ";} 
+} 
+} 
+
+for (var j = 0; j < json.feed.entry[i].link.length; j++) { 
+      if (json.feed.entry[i].link[j].rel == 'alternate') { 
+        break; 
+      } 
+    } 
+newsUrl= "'" + json.feed.entry[i].link[j].href + "'"; 
+var newsTitles = json.feed.entry[i].title.$t;
+var newsTitle =newsTitles.substring(0,90)+"...";
+ 
+TotalPosts = json.feed.openSearch$totalResults.$t; 
+
+
+if (json.feed.entry[i].thr$total) 
+{ 
+ListComments= "<a href='"+json.feed.entry[i].link[j].href+"#comment-form'>"+json.feed.entry[i].thr$total.$t+"</a>"; 
+} 
+ListAuthor= json.feed.entry[i].author[0].name.$t.split(" "); 
+ListAuthor=ListAuthor.slice(0, 1).join(" "); 
+AuthorPic = json.feed.entry[i].author[0].gd$image.src; 
+
+ListMonth= ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]; 
+ListDate= json.feed.entry[i].published.$t.substring(0,10); 
+                         Y = ListDate.substring(0, 4); 
+                        m = ListDate.substring(5, 7); 
+                         D = ListDate.substring(8, 10); 
+                         M = ListMonth[parseInt(m - 1)];                       
+ListUpdate= json.feed.entry[i].updated.$t.substring(0, 16); 
+                         YY = ListUpdate.substring(0, 4); 
+                        mm = ListUpdate.substring(5, 7); 
+                         DD = ListUpdate.substring(8, 10); 
+                         TT = ListUpdate.substring(11, 16); 
+                         MM = ListMonth[parseInt(mm - 1)];   
+
+
+if (json.feed.entry[i].media$thumbnail!=null) 
+{ 
+thumbUrl = json.feed.entry[i].media$thumbnail.url; 
+
+ListImage = thumbUrl.replace("/s72-c/","/s"+ImagewSize+"/");
+
+
+}
+
+else if (json.feed.entry[i].content.$t.match(/youtube\.com.*(\?v=|\/embed\/)(.{11})/) != null) 
+{ 
+    var youtube_id = json.feed.entry[i].content.$t.match(/youtube\.com.*(\?v=|\/embed\/)(.{11})/).pop(); 
+    
+    if (youtube_id.length == 11) { 
+        var ListImage = "'//img.youtube.com/vi/"+youtube_id+"/0.jpg'"; 
+        } 
+} 
+
+else if (json.feed.entry[i].content.$t.match(/src=(.+?[\.jpg|\.gif|\.png]")/) != null) 
+{ 
+// Support For 3rd Party Images 
+ListImage =  json.feed.entry[i].content.$t.match(/src=(.+?[\.jpg|\.gif|\.png]")/)[1]; 
+} 
+else 
+{ 
+ListImage= "'https://4.bp.blogspot.com/-HALLtgFeep0/VfryhQ0C5oI/AAAAAAAAPcY/77mSGND4q84/s200/Icon.png'"; 
+} 
+
+ var newsinphoto = "<li class='hentry' itemscope='itemscope' itemtype='https://schema.org/Article'><figure class='bh-thumb gg left bh-mr-10' itemprop='image' itemscope='itemscope' itemtype='https://schema.org/ImageObject'> <a href="+newsUrl+" title='"+newsTitle+"'><img class='image  wp-post-image' data-lazy-src="+ListImage+" height='77' itemprop='image url' role='img' sizes='(max-width: 137px) 100vw, 137px' src='https://3.bp.blogspot.com/-nFqnJG59ez4/Ww6pTTI2qeI/AAAAAAAAAoA/QqqyDqIoIAI1oGU5VpUUygUD6c73-nKfQCLcBGAs/s1600/1x1.trans.gif' srcset='"+ListImage+" 137w, "+ListImage+" 354w, "+ListImage+" 480w' title='"+newsTitle+"' width='137'/><meta content='"+ListImage+"' itemprop='url'/><meta content='137' itemprop='width'/><meta content='77' itemprop='height'/></a></figure><div class='overflow '><h3 class='entry-title name' itemprop='headline'><a href="+newsUrl+" title='"+newsTitle+"'><span itemprop='name'>"+newsTitle+"</span></a></h3></div></li>";
+	
+document.write(newsinphoto)
+
+
+}
+} 
